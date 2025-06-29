@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Cash Demand Forecasting</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow-sm p-4">
+            <h1 class="text-center text-primary">ATM Cash Demand Forecasting</h1>
+            <form action="/predict_next7" method="post" class="mt-4">
+                <div class="mb-3">
+                    <label for="date" class="form-label">Select Start Date:</label>
+                    <input type="date" class="form-control" name="date" required>
+                </div>
+                <div class="mb-3">
+                    <label for="location" class="form-label">Select ATM Location:</label>
+                    <select class="form-control" name="location" required>
+                        {% for location in locations %}
+                            <option value="{{ location }}">{{ location }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Forecast The Next 7 Days</button>
+                <div class="mt-4 text-center">
+                    <a href="/view_predictions" class="btn btn-outline-secondary">View Past Predictions</a>
+                </div>
+            </form>
+
+            {% if predictions %}
+                <div class="alert alert-success mt-3">
+                    <h4>Predicted Withdrawals for Next 7 Days:</h4>
+                    <ul class="list-group">
+                        {% for date, prediction in predictions %}
+                            <li class="list-group-item">{{ date }}: <strong>{{ prediction }}</strong></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="mt-4 text-center">
+                    <h5>Forecast Chart</h5>
+                    <img src="{{ chart_url }}" alt="Forecast Chart" class="img-fluid rounded shadow-sm">
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
